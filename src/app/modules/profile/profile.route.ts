@@ -6,7 +6,7 @@ import { ProfileController } from './profile.controller';
 const profileRouter = express.Router();
 
 profileRouter.get(
-  '/profile',
+  '/',
   auth(UserRole.ADMIN, UserRole.CUSTOMER),
   ProfileController.getProfile
 );
