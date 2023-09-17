@@ -48,7 +48,7 @@ const findOne = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const UserController = {
+export const OrderController = {
   create,
   findAll,
   findOne,
