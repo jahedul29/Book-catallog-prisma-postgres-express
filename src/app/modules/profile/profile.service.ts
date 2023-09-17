@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
 
-const getProfile = async (id: string, user: any): Promise<User | null> => {
+const getProfile = async (user: any): Promise<User | null> => {
   const result = await prisma.user.findFirst({
     where: {
       id: user.userId,
