@@ -13,7 +13,11 @@ orderRouter.post(
   auth(UserRole.CUSTOMER),
   OrderController.create
 );
-orderRouter.get('/', auth(UserRole.ADMIN), OrderController.findAll);
+orderRouter.get(
+  '/',
+  auth(UserRole.ADMIN, UserRole.CUSTOMER),
+  OrderController.findAll
+);
 // orderRouter.get('/:id', auth(UserRole.ADMIN), OrderController.findOne);
 
 export const OrderRouter = orderRouter;

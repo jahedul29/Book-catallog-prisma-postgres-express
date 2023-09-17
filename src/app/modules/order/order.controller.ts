@@ -23,8 +23,9 @@ const create = catchAsync(async (req: Request, res: Response) => {
 
 const findAll = catchAsync(async (req: Request, res: Response) => {
   const paginationParams = pick(req.query, paginationFields);
+  const user = req.user as any;
 
-  const result = await OrderService.findAll(paginationParams);
+  const result = await OrderService.findAll(user, paginationParams);
 
   sendResponse(res, {
     success: true,

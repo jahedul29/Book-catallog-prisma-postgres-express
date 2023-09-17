@@ -1,4 +1,4 @@
-import { Order } from '@prisma/client';
+import { Order, UserRole } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -20,23 +20,49 @@ const create = async (
 };
 
 const findAll = async (
+  user: any,
   options: IPaginationOptions
-): Promise<IGenericResponse<Order[]>> => {
+): Promise<IGenericResponse<Order[] | null>> => {
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
 
-  const result = await prisma.order.findMany({
-    skip,
-    take: limit,
-    orderBy: {
-      [sortBy]: sortOrder,
-    },
-    include: {
-      user: true,
-    },
-  });
+  const { userId, role } = user;
 
-  const total = await prisma.order.count({});
+  let result = null;
+  let total = 0;
+
+  if (role === UserRole.ADMIN) {
+    result = await prisma.order.findMany({
+      skip,
+      take: limit,
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+      include: {
+        user: true,
+      },
+    });
+    total = await prisma.order.count({});
+  } else if (role === UserRole.CUSTOMER) {
+    result = await prisma.order.findMany({
+      where: {
+        userId,
+      },
+      skip,
+      take: limit,
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+      include: {
+        user: true,
+      },
+    });
+    total = await prisma.order.count({
+      where: {
+        userId,
+      },
+    });
+  }
 
   return {
     meta: {
