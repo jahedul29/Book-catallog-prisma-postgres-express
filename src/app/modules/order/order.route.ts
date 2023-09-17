@@ -8,7 +8,7 @@ import { OrderZodValidation } from './order.validation';
 const orderRouter = express.Router();
 
 orderRouter.post(
-  '/create-book',
+  '/create-order',
   validateRequest(OrderZodValidation.create),
   auth(UserRole.CUSTOMER),
   OrderController.create
