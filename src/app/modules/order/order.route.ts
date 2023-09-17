@@ -18,6 +18,10 @@ orderRouter.get(
   auth(UserRole.ADMIN, UserRole.CUSTOMER),
   OrderController.findAll
 );
-// orderRouter.get('/:id', auth(UserRole.ADMIN), OrderController.findOne);
+orderRouter.get(
+  '/:id',
+  auth(UserRole.ADMIN, UserRole.CUSTOMER),
+  OrderController.findOne
+);
 
 export const OrderRouter = orderRouter;

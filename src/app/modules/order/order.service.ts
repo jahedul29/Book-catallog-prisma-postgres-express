@@ -1,4 +1,6 @@
 import { Order, UserRole } from '@prisma/client';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -74,15 +76,20 @@ const findAll = async (
   };
 };
 
-const findOne = async (id: string): Promise<Order | null> => {
+const findOne = async (id: string, user: any): Promise<Order | null> => {
+  const whereCondition =
+    user.role === UserRole.ADMIN ? { id } : { id, userId: user.userId };
+
   const result = await prisma.order.findFirst({
-    where: {
-      id,
-    },
+    where: whereCondition,
     include: {
       user: true,
     },
   });
+
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Order not found');
+  }
 
   return result;
 };

@@ -38,8 +38,9 @@ const findAll = catchAsync(async (req: Request, res: Response) => {
 
 const findOne = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
+  const user = req.user as any;
 
-  const result = await OrderService.findOne(id);
+  const result = await OrderService.findOne(id, user);
 
   sendResponse(res, {
     success: true,
