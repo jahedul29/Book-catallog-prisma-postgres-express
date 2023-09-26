@@ -10,17 +10,17 @@ const orderRouter = express.Router();
 orderRouter.post(
   '/create-order',
   validateRequest(OrderZodValidation.create),
-  auth(UserRole.CUSTOMER),
+  auth(UserRole.customer),
   OrderController.create
 );
 orderRouter.get(
   '/',
-  auth(UserRole.ADMIN, UserRole.CUSTOMER),
+  auth(UserRole.admin, UserRole.customer),
   OrderController.findAll
 );
 orderRouter.get(
   '/:id',
-  auth(UserRole.ADMIN, UserRole.CUSTOMER),
+  auth(UserRole.admin, UserRole.customer),
   OrderController.findOne
 );
 

@@ -1,3 +1,6 @@
 export type IBookFilterRequest = {
-  searchTerm?: string;
+  search?: string;
+  category?: string;
+  maxPrice?: number;
+  minPrice?: number;
 };

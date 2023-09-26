@@ -7,14 +7,14 @@ import { UserZodValidation } from './user.validation';
 
 const userRouter = express.Router();
 
-userRouter.get('/', auth(UserRole.ADMIN), UserController.findAll);
-userRouter.get('/:id', auth(UserRole.ADMIN), UserController.findOne);
+userRouter.get('/', auth(UserRole.admin), UserController.findAll);
+userRouter.get('/:id', auth(UserRole.admin), UserController.findOne);
 userRouter.patch(
   '/:id',
   validateRequest(UserZodValidation.update),
-  auth(UserRole.ADMIN),
+  auth(UserRole.admin),
   UserController.updateOne
 );
-userRouter.delete('/:id', auth(UserRole.ADMIN), UserController.deleteOne);
+userRouter.delete('/:id', auth(UserRole.admin), UserController.deleteOne);
 
 export const UserRouter = userRouter;

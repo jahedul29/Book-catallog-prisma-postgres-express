@@ -1,4 +1,4 @@
-import { Book, Prisma } from '@prisma/client';
+import { Book } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -27,15 +27,15 @@ const findAll = async (
 ): Promise<IGenericResponse<Book[]>> => {
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
-  const { searchTerm, ...filterData } = filters;
+  const { search, ...filterData } = filters;
 
   const andConditions = [];
 
-  if (searchTerm) {
+  if (search) {
     andConditions.push({
       OR: bookSearchableFields.map(field => ({
         [field]: {
-          contains: searchTerm,
+          contains: search,
           mode: 'insensitive',
         },
       })),
@@ -51,6 +51,18 @@ const findAll = async (
               id: (filterData as any)[key],
             },
           };
+        } else if (key === 'minPrice') {
+          return {
+            [key]: {
+              gte: (filterData as any)[key],
+            },
+          };
+        } else if (key === 'maxPrice') {
+          return {
+            [key]: {
+              lte: (filterData as any)[key],
+            },
+          };
         } else {
           return {
             [key]: {
@@ -62,7 +74,7 @@ const findAll = async (
     });
   }
 
-  const whereConditions: Prisma.BookWhereInput = andConditions.length
+  const whereConditions: any = andConditions.length
     ? { AND: andConditions }
     : {};
 

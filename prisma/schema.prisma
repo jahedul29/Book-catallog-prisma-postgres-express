@@ -29,8 +29,8 @@ model User {
 }
 
 enum UserRole {
-  ADMIN
-  CUSTOMER
+  admin
+  customer
 }
 
 model Category {
@@ -80,7 +80,7 @@ model ReviewAndRating {
 
 model Order {
   id           String      @id @default(uuid())
-  status       OrderStatus @default(PENDING)
+  status       OrderStatus @default(pending)
   orderedBooks Json
 
   userId String
@@ -93,7 +93,7 @@ model Order {
 }
 
 enum OrderStatus {
-  PENDING
-  SHIPPED
-  DELIVERED
+  pending
+  shipped
+  delivered
 }

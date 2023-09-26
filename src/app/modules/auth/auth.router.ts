@@ -28,7 +28,7 @@ authRouter.post(
 authRouter.patch(
   '/change-password',
   validateRequest(AuthZodValidation.changePassword),
-  auth(UserRole.ADMIN, UserRole.CUSTOMER),
+  auth(UserRole.admin, UserRole.customer),
   AuthController.changePassword
 );
 

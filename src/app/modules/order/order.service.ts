@@ -33,7 +33,7 @@ const findAll = async (
   let result = null;
   let total = 0;
 
-  if (role === UserRole.ADMIN) {
+  if (role === UserRole.admin) {
     result = await prisma.order.findMany({
       skip,
       take: limit,
@@ -45,7 +45,7 @@ const findAll = async (
       },
     });
     total = await prisma.order.count({});
-  } else if (role === UserRole.CUSTOMER) {
+  } else if (role === UserRole.customer) {
     result = await prisma.order.findMany({
       where: {
         userId,
@@ -78,7 +78,7 @@ const findAll = async (
 
 const findOne = async (id: string, user: any): Promise<Order | null> => {
   const whereCondition =
-    user.role === UserRole.ADMIN ? { id } : { id, userId: user.userId };
+    user.role === UserRole.admin ? { id } : { id, userId: user.userId };
 
   const result = await prisma.order.findFirst({
     where: whereCondition,

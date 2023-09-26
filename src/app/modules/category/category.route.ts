@@ -10,7 +10,7 @@ const categoryRouter = express.Router();
 categoryRouter.post(
   '/create-category',
   validateRequest(CategoryZodValidation.create),
-  auth(UserRole.ADMIN),
+  auth(UserRole.admin),
   CategoryController.create
 );
 categoryRouter.get('/', CategoryController.findAll);
@@ -18,12 +18,12 @@ categoryRouter.get('/:id', CategoryController.findOne);
 categoryRouter.patch(
   '/:id',
   validateRequest(CategoryZodValidation.update),
-  auth(UserRole.ADMIN),
+  auth(UserRole.admin),
   CategoryController.updateOne
 );
 categoryRouter.delete(
   '/:id',
-  auth(UserRole.ADMIN),
+  auth(UserRole.admin),
   CategoryController.deleteOne
 );
 
