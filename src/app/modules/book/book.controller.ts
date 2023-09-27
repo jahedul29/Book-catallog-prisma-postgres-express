@@ -30,7 +30,7 @@ const findAll = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'Categories retrieved successfully',
+    message: 'Books retrieved successfully',
     meta: result.meta,
     data: result.data,
   });
@@ -46,6 +46,24 @@ const findOne = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     message: 'Book fetched successfully',
     data: result,
+  });
+});
+
+const findByCategoryId = catchAsync(async (req: Request, res: Response) => {
+  const categoryId = req.params.categoryId;
+  const paginationParams = pick(req.query, paginationFields);
+
+  const result = await BookService.findByCategoryId(
+    categoryId,
+    paginationParams
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Books retrieved successfully',
+    meta: result.meta,
+    data: result.data,
   });
 });
 
@@ -80,6 +98,7 @@ export const BookController = {
   create,
   findAll,
   findOne,
+  findByCategoryId,
   updateOne,
   deleteOne,
 };

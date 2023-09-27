@@ -53,13 +53,13 @@ const findAll = async (
           };
         } else if (key === 'minPrice') {
           return {
-            [key]: {
+            price: {
               gte: (filterData as any)[key],
             },
           };
         } else if (key === 'maxPrice') {
           return {
-            [key]: {
+            price: {
               lte: (filterData as any)[key],
             },
           };
@@ -109,12 +109,43 @@ const findOne = async (id: string): Promise<Book | null> => {
     where: {
       id,
     },
-    include: {
-      category: true,
-    },
   });
 
   return result;
+};
+
+const findByCategoryId = async (
+  categoryId: string,
+  options: IPaginationOptions
+): Promise<IGenericResponse<Book[]>> => {
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelpers.calculatePagination(options);
+
+  const result = await prisma.book.findMany({
+    where: {
+      categoryId,
+    },
+    skip,
+    take: limit,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+  });
+
+  const total = await prisma.book.count({
+    where: {
+      categoryId,
+    },
+  });
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  };
 };
 
 const updateOne = async (
@@ -151,6 +182,7 @@ export const BookService = {
   create,
   findAll,
   findOne,
+  findByCategoryId,
   updateOne,
   deleteOne,
 };

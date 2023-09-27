@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import config from '../../../config';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
+import { ILoginResponse } from './auth.interface';
 import { AuthService } from './auth.service';
 
 const signUp = catchAsync(async (req: Request, res: Response) => {
@@ -34,11 +35,13 @@ const login = catchAsync(
 
     res.cookie('refreshToken', refreshToken, cookieOptions);
 
-    sendResponse(res, {
+    console.log(restLoginData.accessToken);
+
+    sendResponse<ILoginResponse>(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: 'Logged in successfully',
-      data: restLoginData,
+      token: restLoginData.accessToken,
     });
   }
 );

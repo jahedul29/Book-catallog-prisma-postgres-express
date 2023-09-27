@@ -14,6 +14,7 @@ bookRouter.post(
   BookController.create
 );
 bookRouter.get('/', BookController.findAll);
+bookRouter.get('/:categoryId/category', BookController.findByCategoryId);
 bookRouter.get('/:id', BookController.findOne);
 bookRouter.patch(
   '/:id',

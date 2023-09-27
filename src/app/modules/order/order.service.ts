@@ -13,9 +13,6 @@ const create = async (
 ): Promise<Order | null> => {
   const result = await prisma.order.create({
     data: { ...data, userId },
-    include: {
-      user: true,
-    },
   });
 
   return result;
